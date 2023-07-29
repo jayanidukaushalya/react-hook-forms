@@ -40,4 +40,16 @@ const mobileValidation = {
   },
 };
 
-export { usernameValidation, emailValidation, mobileValidation };
+const socialValidations = {
+  required: {
+    value: true,
+    message: "Social links are required !",
+  },
+};
+
+export {
+  usernameValidation,
+  emailValidation,
+  mobileValidation,
+  socialValidations,
+};

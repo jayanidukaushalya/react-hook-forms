@@ -3,6 +3,7 @@ import { DevTool } from "@hookform/devtools";
 import {
   emailValidation,
   mobileValidation,
+  socialValidations,
   usernameValidation,
 } from "../util/form-validation";
 import {
@@ -22,13 +23,16 @@ export default function Form() {
     register,
     control,
     handleSubmit,
-    trigger,
     formState: { errors, isDirty, isValid, isLoading, isSubmitSuccessful },
   } = useForm({
     defaultValues: {
       username: "jayanidu_kaushalya",
       email: "jayanidukaushalya@gmail.com",
       mobile: "0779474416",
+      social: {
+        twitter: "",
+        facebook: "",
+      },
     },
     mode: "onBlur",
   });
@@ -94,7 +98,7 @@ export default function Form() {
           >
             Register
           </Typography>
-          <Box className="inputWrapper">
+          <Box>
             <TextField
               fullWidth
               error={!!errors.username}
@@ -105,7 +109,7 @@ export default function Form() {
               {...register("username", usernameValidation)}
             />
           </Box>
-          <Box className="inputWrapper">
+          <Box>
             <TextField
               fullWidth
               error={!!errors.email}
@@ -116,7 +120,7 @@ export default function Form() {
               {...register("email", emailValidation)}
             />
           </Box>
-          <Box className="inputWrapper">
+          <Box>
             <TextField
               fullWidth
               error={!!errors.mobile}
@@ -127,11 +131,33 @@ export default function Form() {
               {...register("mobile", mobileValidation)}
             />
           </Box>
-          <Box className="inputWrapper">
+          <Box>
             <DateInput {...propsToPassOnDateInput} />
           </Box>
-          <Box className="inputWrapper">
+          <Box>
             <SelectInput {...propsToPassOnSelect} />
+          </Box>
+          <Box>
+            <TextField
+              fullWidth
+              error={!!errors.social?.twitter}
+              helperText={errors.social?.twitter?.message}
+              variant="outlined"
+              label="Twitter Link"
+              id="twitter"
+              {...register("social.twitter", socialValidations)}
+            />
+          </Box>
+          <Box>
+            <TextField
+              fullWidth
+              error={!!errors.social?.facebook}
+              helperText={errors.social?.facebook?.message}
+              variant="outlined"
+              label="Facebook Link"
+              id="facebook"
+              {...register("social.facebook", socialValidations)}
+            />
           </Box>
           <Button
             type="submit"
