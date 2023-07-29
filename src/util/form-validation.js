@@ -22,6 +22,11 @@ const emailValidation = {
     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     message: "Email is not valid",
   },
+  validate: {
+    blackListEmails: (fieldValue) => {
+      return !fieldValue.endsWith("edu.com") || "This domain is not supported";
+    },
+  },
 };
 
 const mobileValidation = {
