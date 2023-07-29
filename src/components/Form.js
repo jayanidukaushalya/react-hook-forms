@@ -7,22 +7,27 @@ import {
   usernameValidation,
 } from "../util/form-validation";
 import {
+  Alert,
   Box,
   Button,
+  Collapse,
+  IconButton,
   Paper,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import DateInput from "./DateInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SelectInput from "./SelectInput";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function Form() {
   const {
     register,
     control,
     handleSubmit,
+    reset,
     formState: { errors, isDirty, isValid, isLoading, isSubmitSuccessful },
   } = useForm({
     defaultValues: {
@@ -37,9 +42,16 @@ export default function Form() {
     mode: "onBlur",
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      setOpen(true);
+      reset();
+      setTimeout(() => {
+        setOpen(false);
+        console.log("timeout");
+      }, 3000);
+    }
+  }, [isSubmitSuccessful, reset]);
 
   const options = [
     {
@@ -57,9 +69,14 @@ export default function Form() {
   ];
 
   const [select, setSelect] = useState(0);
+  const [open, setOpen] = useState(false);
 
   const handleChange = (event) => {
     setSelect(event.target.value);
+  };
+
+  const onSubmit = (data) => {
+    console.log(data);
   };
 
   const propsToPassOnSelect = {
@@ -161,13 +178,36 @@ export default function Form() {
           </Box>
           <Button
             type="submit"
-            disabled={!isDirty || !isValid}
+            disabled={!isDirty || !isValid || isLoading}
             variant="contained"
           >
             Register
           </Button>
         </Stack>
       </form>
+
+      <Collapse
+        sx={{ position: "fixed", left: "15px", bottom: "20px", zIndex: 1000 }}
+        in={open}
+      >
+        <Alert
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setOpen(false);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}
+        >
+          Form submitted successfully !
+        </Alert>
+      </Collapse>
       <DevTool control={control} />
     </Paper>
   );
